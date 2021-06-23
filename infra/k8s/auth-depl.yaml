@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          # note: the image must the one we are sending to google cloud
-          image: us.gcr.io/fifth-base-317709/auth
+          image: zavanton/auth
 ---
 apiVersion: v1
 kind: Service

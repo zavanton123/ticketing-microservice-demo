@@ -5,12 +5,10 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  googleCloudBuild:
-    # this is project id fro google cloud
-    projectId: fifth-base-317709
+  local:
+    push: false
   artifacts:
-    # the format is always the same: us.gcr.io/some-project-id-here/some-image-name-here
-    - image: us.gcr.io/fifth-base-317709/auth
+    - image: zavanton/auth
       context: auth
       docker:
         dockerfile: Dockerfile
