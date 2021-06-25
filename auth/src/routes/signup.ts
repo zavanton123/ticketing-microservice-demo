@@ -32,9 +32,7 @@ router.post('/api/users/signup', [
       // the ! is used to avoid typescript checks
       process.env.JWT_KEY!
     )
-    req.session = {
-      jwt: userJwt
-    };
+    req.session = {jwt: userJwt};
     res.status(201).send(user);
   });
 
