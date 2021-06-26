@@ -5,7 +5,7 @@ import {currentUserRouter} from "./routes/current-user";
 import {signinRouter} from "./routes/signin";
 import {signupRouter} from "./routes/signup";
 import {signoutRouter} from "./routes/signout";
-import {errorHandler} from '@zatickets/common';
+import {errorHandler, NotFoundError} from '@zatickets/common';
 import cookieSession from 'cookie-session';
 
 const app = express();
@@ -24,6 +24,10 @@ app.use(currentUserRouter);
 app.use(signinRouter);
 app.use(signoutRouter);
 app.use(signupRouter);
+
+app.all('*', async (req, res) => {
+  throw new NotFoundError();
+});
 
 // global error handler for the auth microservice
 app.use(errorHandler);

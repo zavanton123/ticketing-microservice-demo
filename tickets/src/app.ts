@@ -1,8 +1,9 @@
 import express from 'express';
 import 'express-async-errors';
 import {json} from 'body-parser';
-import {errorHandler} from '@zatickets/common';
+import {errorHandler, NotFoundError} from '@zatickets/common';
 import cookieSession from 'cookie-session';
+import {createTicketRouter} from "./routes/new";
 
 const app = express();
 
@@ -15,6 +16,12 @@ app.use(cookieSession({
   // http is used for testing, https is used for production
   secure: process.env.NODE_ENV !== 'test'
 }))
+
+app.use(createTicketRouter);
+
+app.all('*', async (req, res) => {
+  throw new NotFoundError();
+});
 
 // global error handler for the auth microservice
 app.use(errorHandler);
