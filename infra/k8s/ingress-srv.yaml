@@ -13,10 +13,12 @@ spec:
     - host: ticketing.dev
       http:
         paths:
+          # route for the auth microservice
           - path: /api/users/?(.*)
             backend:
               serviceName: auth-srv
               servicePort: 3000
+          # route for the web client
           - path: /?(.*)
             backend:
               serviceName: client-srv

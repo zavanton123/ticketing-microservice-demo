@@ -7,6 +7,8 @@ export const validateRequest = (
   res: Response,
   next: NextFunction
 ) => {
+  // if the request params are not validated by express-validator rules
+  // an error is thrown
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     throw new RequestValidationError(errors.array());

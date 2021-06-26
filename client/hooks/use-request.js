@@ -1,6 +1,10 @@
 import axios from 'axios';
 import {useState} from 'react';
 
+// Define a custom hook
+// The hook makes some request (with url, method and body)
+// It does some action if successful (onSuccess)
+// or processes the errors
 export default ({url, method, body, onSuccess}) => {
   const [errors, setErrors] = useState(null);
 

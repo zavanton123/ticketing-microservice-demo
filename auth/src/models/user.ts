@@ -25,16 +25,23 @@ const userSchema = new mongoose.Schema({
     required: true
   }
 }, {
+  // we transform how the User will be presented
+  // (i.e. res.send(user))
   toJSON: {
     transform(doc, ret) {
+      // replace _id by id
       ret.id = ret._id;
       delete ret._id;
+      // don't show the password field
       delete ret.password;
+      // don't show the __v field
       delete ret.__v;
     }
   }
 });
 
+// before saving a User,
+// replace its plain text password by the hashed password
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {
     const hashed = await Password.toHash(this.get('password'));

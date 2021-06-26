@@ -6,6 +6,8 @@ export const requireAuth = (
   res: Response,
   next: NextFunction
 ) => {
+  // redirect to error handler
+  // if there is no cookie with JWT
   if (!req.currentUser) {
     throw new NotAuthorizedError()
   }

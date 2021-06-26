@@ -13,6 +13,7 @@ spec:
         app: auth-mongo
     spec:
       containers:
+        # note: the image is downloaded from docker hub
         - name: auth-mongo
           image: mongo
 ---
