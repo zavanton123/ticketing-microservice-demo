@@ -1,7 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import {json} from 'body-parser';
-import {errorHandler, NotFoundError} from '@zatickets/common';
+import {errorHandler, NotFoundError, currentUser} from '@zatickets/common';
 import cookieSession from 'cookie-session';
 import {createTicketRouter} from "./routes/new";
 
@@ -16,6 +16,7 @@ app.use(cookieSession({
   // http is used for testing, https is used for production
   secure: process.env.NODE_ENV !== 'test'
 }))
+app.use(currentUser);
 
 app.use(createTicketRouter);
 
