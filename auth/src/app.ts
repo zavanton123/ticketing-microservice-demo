@@ -5,7 +5,7 @@ import {currentUserRouter} from "./routes/current-user";
 import {signinRouter} from "./routes/signin";
 import {signupRouter} from "./routes/signup";
 import {signoutRouter} from "./routes/signout";
-import {errorHandler} from "../../common/src/middlewares/error-handler";
+import {errorHandler} from '@zatickets/common';
 import cookieSession from 'cookie-session';
 
 const app = express();
