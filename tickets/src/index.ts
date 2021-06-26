@@ -11,7 +11,7 @@ const start = async () => {
   }
 
   try {
-    // note: use the mongodb pod's cluster ip address: auth-mongo-srv
+    // note: use the mongodb pod's cluster ip address: tickets-mongo-srv
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
@@ -22,7 +22,7 @@ const start = async () => {
     console.error(`zavanton - error connecting to DB: ${err}`);
   }
   app.listen(3000, () => {
-    console.log('auth - Listening on port 3000');
+    console.log('tickets - Listening on port 3000');
   });
 }
 
