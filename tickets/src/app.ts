@@ -5,6 +5,7 @@ import {errorHandler, NotFoundError, currentUser} from '@zatickets/common';
 import cookieSession from 'cookie-session';
 import {createTicketRouter} from "./routes/new";
 import {showTicketRouter} from "./routes/show";
+import {indexTicketRouter} from "./routes";
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(currentUser);
 
 app.use(createTicketRouter);
 app.use(showTicketRouter);
+app.use(indexTicketRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
