@@ -18,6 +18,11 @@ spec:
             backend:
               serviceName: auth-srv
               servicePort: 3000
+          # route for the tickets microservice
+          - path: /api/tickets/?(.*)
+            backend:
+              serviceName: tickets-srv
+              servicePort: 3000
           # route for the web client
           - path: /?(.*)
             backend:
