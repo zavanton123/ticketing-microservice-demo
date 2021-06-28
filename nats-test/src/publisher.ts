@@ -10,15 +10,19 @@ const stan = nats.connect('ticketing', 'abc', {
 });
 
 // do when the connection is OK
-stan.on('connect', () => {
+stan.on('connect', async () => {
   console.log(`zavanton - publisher is connected to NATS`);
 
   const publisher = new TicketCreatedPublisher(stan);
-  publisher.publish({
-    id: '123',
-    title: 'concert',
-    price: 20
-  });
+  try {
+    await publisher.publish({
+      id: '123',
+      title: 'concert',
+      price: 20
+    });
+  } catch (err) {
+    console.error(err);
+  }
 
   // // create a json of some complex data object
   // const data = JSON.stringify({
