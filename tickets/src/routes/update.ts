@@ -1,7 +1,9 @@
 import express, {Request, Response} from 'express';
 import {Ticket} from "../models/ticket";
 import {body} from 'express-validator';
-import {validateRequest, NotFoundError, requireAuth, NotAuthorizedError} from '@zatickets/common';
+import {NotAuthorizedError, NotFoundError, requireAuth, validateRequest} from '@zatickets/common';
+import {TicketUpdatedPublisher} from "../events/publishers/ticket-updated-publisher";
+import {natsWrapper} from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -32,6 +34,16 @@ router.put('/api/tickets/:id',
       price: req.body.price
     });
     await ticket.save();
+
+    // IMPORTANT: publish the event that the ticket has been updated to NATS
+    // so that other microservices can receive this event
+    // note: get the NATS client from singleton natsWrapper
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId
+    });
 
     res.send(ticket);
   });

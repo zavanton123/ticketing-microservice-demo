@@ -33,7 +33,7 @@ router.post('/api/tickets',
     // IMPORTANT: publish the event that a new ticket has been created to NATS
     // so that other microservices can receive this event
     // note: get the NATS client from singleton natsWrapper
-    new TicketCreatedPublisher(natsWrapper.client).publish({
+    await new TicketCreatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
       title: ticket.title,
       price: ticket.price,
