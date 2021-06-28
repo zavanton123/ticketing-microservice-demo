@@ -18,6 +18,7 @@ const start = async () => {
       'some-client-id-here',
       'http://nats-srv:4222'
     );
+
     // shut down the entire application
     // when the NATS is disconnected
     natsWrapper.client.on('close', () => {

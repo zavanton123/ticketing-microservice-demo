@@ -13,6 +13,10 @@ declare global {
   }
 }
 
+// note: this replaces the actual import of nats-wrapper
+// by importing the nats-wrapper mock
+jest.mock('../nats-wrapper');
+
 // for testing we are using mongodb in memory
 // open db connection at the start of the tests
 let mongo: any;
