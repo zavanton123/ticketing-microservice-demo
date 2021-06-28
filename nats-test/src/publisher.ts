@@ -8,7 +8,7 @@ const stan = nats.connect('ticketing', 'abc', {
   url: 'http://localhost:4222'
 });
 
-// do when the connetion is OK
+// do when the connection is OK
 stan.on('connect', () => {
   console.log(`zavanton - publisher is connected to NATS`);
 

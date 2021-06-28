@@ -1,5 +1,6 @@
-import nats, {Message} from 'node-nats-streaming';
+import nats from 'node-nats-streaming';
 import {randomBytes} from 'crypto';
+import {TicketCreatedListener} from "./events/ticket-created-listener";
 
 // this is to remove the previous output in the console
 console.clear();
@@ -20,29 +21,7 @@ stan.on('connect', () => {
     process.exit();
   });
 
-  // acks should be sent back manually
-  const options = stan.subscriptionOptions()
-    .setManualAckMode(true);
-
-  // subscribe to some channel
-  // and be a part of some queue group
-  const subscription = stan.subscribe(
-    'ticket:created',
-    'orders-service-queue-group',
-    options
-  );
-
-  // listen for messages and process them
-  subscription.on('message', (msg: Message) => {
-    const data = msg.getData();
-    if (typeof data === 'string') {
-      console.log(`Received event number: ${msg.getSequence()} with data: ${data}`);
-    }
-
-    // send back the ack manually
-    // when the message is processed successfully
-    msg.ack();
-  });
+  new TicketCreatedListener(stan).listen();
 });
 
 // close the NATS client before killing the process
