@@ -1,6 +1,8 @@
 import request from 'supertest';
 import {app} from '../../app';
 import mongoose from 'mongoose';
+// note: a mock is imported here (not the real natsWrapper)
+import {natsWrapper} from "../../nats-wrapper";
 
 it('returns a 404 if the provided id does not exist', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
@@ -49,7 +51,7 @@ it('returns a 401 if the user does not own the ticket', async () => {
 });
 
 it('returns a 400 if the users provides invalid title or price', async () => {
-  const cookie= global.signin();
+  const cookie = global.signin();
   const response = await request(app)
     .post('/api/tickets')
     // note: the same user
@@ -82,7 +84,7 @@ it('returns a 400 if the users provides invalid title or price', async () => {
 });
 
 it('updates the ticket when valid inputs are provided', async () => {
-  const cookie= global.signin();
+  const cookie = global.signin();
   const response = await request(app)
     .post('/api/tickets')
     // note: the same user
@@ -112,4 +114,33 @@ it('updates the ticket when valid inputs are provided', async () => {
 
   expect(ticketResponse.body.title).toEqual(newTitle);
   expect(ticketResponse.body.price).toEqual(newPrice);
+});
+
+it('publishes an event', async () => {
+  const cookie = global.signin();
+  const response = await request(app)
+    .post('/api/tickets')
+    // note: the same user
+    .set('Cookie', cookie)
+    .send({
+      title: 'some-valid-title',
+      price: 20
+    })
+    .expect(201);
+
+  const newTitle = 'some-new-title';
+  const newPrice = 150;
+
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    // note: the same user
+    .set('Cookie', cookie)
+    .send({
+      title: newTitle,
+      price: newPrice
+    })
+    .expect(200);
+
+  // test if the mocked function has been called
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
