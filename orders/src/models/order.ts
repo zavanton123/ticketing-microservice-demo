@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import {OrderStatus} from '@zatickets/common';
+import {TicketDoc} from "./ticket";
 
 interface OrderAttrs {
   userId: string;
