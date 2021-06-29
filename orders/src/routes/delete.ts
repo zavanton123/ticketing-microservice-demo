@@ -19,6 +19,9 @@ router.delete('/api/orders/:orderId',
 
     // To delete the orders means that we mark it as Cancelled
     order.status = OrderStatus.Cancelled;
+    await order.save();
+
+    // todo - publish an event saying this order has been cancelled
 
     res.status(204).send(order);
   });
