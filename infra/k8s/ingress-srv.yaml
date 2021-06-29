@@ -23,6 +23,11 @@ spec:
             backend:
               serviceName: tickets-srv
               servicePort: 3000
+          # route for the orders service
+          - path: /api/orders/?(.*)
+            backend:
+              serviceName: orders-srv
+              servicePort: 3000
           # route for the web client
           - path: /?(.*)
             backend:
