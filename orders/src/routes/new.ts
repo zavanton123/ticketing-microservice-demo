@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 import express, {Request, Response} from 'express';
-import {BadRequestError, NotFoundError, OrderStatus, requireAuth, validateRequest} from '@zatickets/common';
+import {BadRequestError, NotFoundError, requireAuth, validateRequest} from '@zatickets/common';
 import {body} from 'express-validator';
 import {Ticket} from "../models/ticket";
-import {Order} from "../models/order";
 
 const router = express.Router();
 
@@ -25,21 +24,12 @@ router.post('/api/orders', requireAuth,
       throw new NotFoundError();
     }
 
-    // Make sure that this ticket is not already reserved
+    // Make sure that this ticket is not already reserved.
     // Run query to look at all orders. Find an order where the ticket
     // is the ticket we just found and the order status is not cancelled
-    // If such an order is found, then the ticket is reserved
-    const existingOrder = await Order.findOne({
-      ticket: ticket,
-      status: {
-        $in: [
-          OrderStatus.Created,
-          OrderStatus.AwaitingPayment,
-          OrderStatus.Complete
-        ]
-      }
-    });
-    if (existingOrder) {
+    // If such an order is found, then the ticket is reserved.
+    const isReserved = await ticket.isReserved();
+    if (isReserved) {
       throw new BadRequestError('Ticket is already reserved');
     }
 

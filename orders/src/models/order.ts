@@ -2,6 +2,9 @@ import mongoose from 'mongoose';
 import {OrderStatus} from '@zatickets/common';
 import {TicketDoc} from "./ticket";
 
+// reexport OrderStatus for use by other modules in this microservice
+export {OrderStatus};
+
 interface OrderAttrs {
   userId: string;
   status: OrderStatus;
