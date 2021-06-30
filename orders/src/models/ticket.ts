@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 // note: import the reexported OrderStatus
-import {Order, OrderStatus} from "./order";
+import { Order, OrderStatus } from "./order";
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 interface TicketAttrs {
   id: string;
@@ -11,6 +12,8 @@ interface TicketAttrs {
 export interface TicketDoc extends mongoose.Document {
   title: string;
   price: number;
+  // used by optimistic concurrency control
+  version: number;
 
   isReserved(): Promise<boolean>;
 }
@@ -37,6 +40,10 @@ const ticketSchema = new mongoose.Schema({
     }
   }
 });
+
+// setup optimistic concurrency control
+ticketSchema.set('versionKey', 'version');
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket({
@@ -69,4 +76,4 @@ ticketSchema.methods.isReserved = async function () {
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
 
-export {Ticket};
+export { Ticket };
