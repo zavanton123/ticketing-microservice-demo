@@ -2,6 +2,7 @@ import { Ticket } from "../../models/ticket";
 import { Listener, OrderCreatedEvent, Subjects } from '@zatickets/common';
 import { Message } from 'node-nats-streaming';
 import { queueGroupName } from "./queue-group-name";
+import {TicketUpdatedPublisher} from "../publishers/ticket-updated-publisher";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
@@ -21,6 +22,18 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 
     // save the ticket
     await ticket.save();
+
+    // the ticket is updated, so we must send a ticket:updated event
+    // note: we are adding 'await' here, so that we first publish the event,
+    // and only after it succeeds or fails to publish we actually send the ack
+    await new TicketUpdatedPublisher(this.client).publish({
+      id: ticket.id,
+      price: ticket.price,
+      title: ticket.title,
+      userId: ticket.userId,
+      orderId: ticket.orderId,
+      version: ticket.version
+    });
 
     // ack the message
     msg.ack();
