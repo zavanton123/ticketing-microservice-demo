@@ -8,5 +8,7 @@ export interface TicketUpdatedEvent {
     title: string;
     price: number;
     userId: string;
+    // the id of the order which is reserving this ticket
+    orderId?: string;
   };
 }
