@@ -1,3 +1,4 @@
+import {updateIfCurrentPlugin} from 'mongoose-update-if-current';
 import mongoose from 'mongoose';
 import {OrderStatus} from '@zatickets/common';
 import {TicketDoc} from "./ticket";
@@ -17,6 +18,8 @@ interface OrderDoc extends mongoose.Document {
   status: OrderStatus;
   expiresAt: Date;
   ticket: TicketDoc;
+  // used for optimistic concurrency control
+  version: number;
 }
 
 interface OrderModel extends mongoose.Model<OrderDoc> {
@@ -49,6 +52,10 @@ const orderSchema = new mongoose.Schema({
     }
   }
 });
+
+// setup optimistic concurrency control
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
   return new Order(attrs);
