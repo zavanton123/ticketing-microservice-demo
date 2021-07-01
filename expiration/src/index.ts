@@ -1,4 +1,6 @@
 import { natsWrapper } from "./nats-wrapper";
+import {OrderCreatedListener} from "./events/listeners/order-created-listener";
+import { OrderCancelledListener } from "../../tickets/src/events/listeners/order-cancelled-listener";
 
 const start = async () => {
   // check if the environment variables are set
@@ -29,6 +31,9 @@ const start = async () => {
     // disconnect NATS when the application is closed
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    // listen for order:created events
+    new OrderCancelledListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(`zavanton - error connecting to DB: ${err}`);
   }
