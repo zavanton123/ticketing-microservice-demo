@@ -49,6 +49,7 @@ ticketSchema.set('versionKey', 'version');
 ticketSchema.plugin(updateIfCurrentPlugin);
 
 // This is for optimistic concurrency control
+// (i.e. find by the specific id and specific version number)
 ticketSchema.statics.findByEvent = (event: { id: string, version: number }) => {
   return Ticket.findOne({
     _id: event.id,

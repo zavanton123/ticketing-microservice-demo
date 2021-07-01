@@ -5,7 +5,6 @@ import { TicketUpdatedListener } from "../ticket-updated-listener";
 import { natsWrapper } from "../../../nats-wrapper";
 import { Ticket } from "../../../models/ticket";
 
-
 const setup = async () => {
   // create a listener
   const listener = new TicketUpdatedListener(natsWrapper.client);
@@ -38,19 +37,36 @@ const setup = async () => {
 };
 
 it('finds, updates and saves a ticket', async () => {
-  const {msg, data, ticket, listener} = await setup();
-  await listener.onMessage(data, msg);
-  const updatedTicket = await Ticket.findById(ticket.id);
+  // setup the listener and other stuff
+  const { msg, data, ticket, listener } = await setup();
 
+  // receive the message
+  await listener.onMessage(data, msg);
+
+  // check that the ticket has been updated
+  const updatedTicket = await Ticket.findById(ticket.id);
   expect(updatedTicket!.title).toEqual(data.title);
   expect(updatedTicket!.price).toEqual(data.price);
   expect(updatedTicket!.version).toEqual(data.version);
 });
 
 it('acks the message', async () => {
-  const {msg, data, ticket, listener} = await setup();
+  const { msg, data, ticket, listener } = await setup();
 
   await listener.onMessage(data, msg);
 
   expect(msg.ack).toHaveBeenCalled();
+});
+
+it('does not call ack if the event has a skipped version number', async () => {
+  const { msg, data, listener, ticket } = await setup();
+
+  data.version = 10;
+
+  try {
+    await listener.onMessage(data, msg);
+  } catch (err) {
+
+  }
+  expect(msg.ack).not.toHaveBeenCalled();
 });

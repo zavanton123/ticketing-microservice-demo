@@ -9,6 +9,7 @@ export class TicketUpdatedListener extends Listener<TicketUpdatedEvent> {
 
   async onMessage(data: TicketUpdatedEvent['data'], msg: Message) {
     // this is optimistic concurrency control
+    // (find by the specific id and version)
     const ticket = await Ticket.findByEvent(data);
 
     if (!ticket) {
