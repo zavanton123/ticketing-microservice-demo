@@ -35,7 +35,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       version: ticket.version
     });
 
-    // ack the message
+    // the event is processed, so we are sending an ack
     msg.ack();
   }
 }
