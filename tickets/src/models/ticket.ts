@@ -13,6 +13,9 @@ interface TicketDoc extends mongoose.Document {
   userId: string;
   // for concurrency version control
   version: number;
+  // indicates if there is an order for this ticket
+  // (used to locking/unlocking the ticket)
+  orderId?: string;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
@@ -31,6 +34,9 @@ const ticketSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true
+  },
+  orderId: {
+    type: String
   }
 }, {
   toJSON: {
