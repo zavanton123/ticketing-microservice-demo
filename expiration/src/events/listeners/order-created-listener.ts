@@ -1,8 +1,7 @@
-import { Listener } from '@zatickets/common';
+import { Listener, OrderCreatedEvent, Subjects } from '@zatickets/common';
 import { Message } from 'node-nats-streaming';
-import { OrderCreatedEvent, Subjects } from "../../../../common/src";
 import { queueGroupName } from "./queue-group-name";
-import {expirationQueue} from "../../queues/expiration-queue";
+import { expirationQueue } from "../../queues/expiration-queue";
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
