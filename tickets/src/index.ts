@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import {app} from "./app";
 import {natsWrapper} from "./nats-wrapper";
+import {OrderCreatedListener} from "./events/listeners/order-created-listener";
+import {OrderCancelledListener} from "./events/listeners/order-cancelled-listener";
 
 const start = async () => {
   // check if the environment variables are set
@@ -37,6 +39,10 @@ const start = async () => {
     // disconnect NATS when the application is closed
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
+
+    // Listen for order created/cancelled events
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
 
     // note: use the mongodb pod's cluster ip address: tickets-mongo-srv
     await mongoose.connect(process.env.MONGO_URI, {

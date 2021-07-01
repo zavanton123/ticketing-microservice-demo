@@ -1,9 +1,9 @@
-import express, {Request, Response} from 'express';
-import {Ticket} from "../models/ticket";
-import {body} from 'express-validator';
-import {NotAuthorizedError, NotFoundError, requireAuth, validateRequest} from '@zatickets/common';
-import {TicketUpdatedPublisher} from "../events/publishers/ticket-updated-publisher";
-import {natsWrapper} from "../nats-wrapper";
+import express, { Request, Response } from 'express';
+import { Ticket } from "../models/ticket";
+import { body } from 'express-validator';
+import { BadRequestError, NotAuthorizedError, NotFoundError, requireAuth, validateRequest } from '@zatickets/common';
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.put('/api/tickets/:id',
       .isEmpty()
       .withMessage('The title is required'),
     body('price')
-      .isFloat({gt: 0})
+      .isFloat({ gt: 0 })
       .withMessage('Price must be greater than 0')
 
   ],
@@ -25,6 +25,12 @@ router.put('/api/tickets/:id',
     if (!ticket) {
       throw new NotFoundError;
     }
+
+    // if the orderId exists, that means that this ticket is reserved by the order
+    if (ticket.orderId) {
+      throw new BadRequestError('Cannot edit a reserved ticket');
+    }
+
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
@@ -49,4 +55,4 @@ router.put('/api/tickets/:id',
     res.send(ticket);
   });
 
-export {router as updateTicketRouter};
+export { router as updateTicketRouter };
