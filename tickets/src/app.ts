@@ -1,12 +1,12 @@
 import express from 'express';
 import 'express-async-errors';
-import {json} from 'body-parser';
-import {errorHandler, NotFoundError, currentUser} from '@zatickets/common';
+import { json } from 'body-parser';
+import { errorHandler, NotFoundError, currentUser } from '@zatickets/common';
 import cookieSession from 'cookie-session';
-import {createTicketRouter} from "./routes/new";
-import {showTicketRouter} from "./routes/show";
-import {indexTicketRouter} from "./routes";
-import {updateTicketRouter} from "./routes/update";
+import { createTicketRouter } from "./routes/new";
+import { showTicketRouter } from "./routes/show";
+import { indexTicketRouter } from "./routes";
+import { updateTicketRouter } from "./routes/update";
 
 const app = express();
 
@@ -33,4 +33,4 @@ app.all('*', async (req, res) => {
 // global error handler for the auth microservice
 app.use(errorHandler);
 
-export {app};
+export { app };
