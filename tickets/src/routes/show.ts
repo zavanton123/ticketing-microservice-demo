@@ -1,12 +1,12 @@
-import express, {Request, Response} from 'express';
-import {NotFoundError} from '@zatickets/common';
-import {Ticket} from "../models/ticket";
+import express, { Request, Response } from 'express';
+import { NotFoundError } from '@zatickets/common';
+import { Ticket } from "../models/ticket";
 
 const router = express.Router();
 
 router.get('/api/tickets/:id', async (req: Request, res: Response) => {
   const ticket = await Ticket.findById(req.params.id);
-  if(!ticket){
+  if (!ticket) {
     throw new NotFoundError();
   }
 
@@ -14,4 +14,4 @@ router.get('/api/tickets/:id', async (req: Request, res: Response) => {
 
 });
 
-export {router as showTicketRouter};
+export { router as showTicketRouter };

@@ -1,7 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
-import { errorHandler, NotFoundError, currentUser } from '@zatickets/common';
+import { currentUser, errorHandler, NotFoundError } from '@zatickets/common';
 import cookieSession from 'cookie-session';
 import { createTicketRouter } from "./routes/new";
 import { showTicketRouter } from "./routes/show";

@@ -23,7 +23,7 @@ router.put('/api/tickets/:id',
   async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) {
-      throw new NotFoundError;
+      throw new NotFoundError();
     }
 
     // if the orderId exists, that means that this ticket is reserved by the order

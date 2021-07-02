@@ -10,3 +10,7 @@ kubectl port-forward nats-depl-c576ff5c8-4mq6p 8222:8222
 
 ### You can check info about clients connected to some channel
 ### http://localhost:8222/streaming/channelsz?subs=1
+
+
+### Create stripe secret key
+kubectl create secret generic stripe-secret --from-literal STRIPE_KEY=some-key-here

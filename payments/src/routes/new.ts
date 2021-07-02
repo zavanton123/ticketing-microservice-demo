@@ -1,3 +1,4 @@
+import {stripe} from "../../stripe";
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { BadRequestError, OrderStatus, requireAuth, validateRequest } from "@zatickets/common";
@@ -34,6 +35,13 @@ router.post('/api/payments',
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError('Cannot pay for a cancelled order');
     }
+
+    // Actually make the payment using Stripe
+    await stripe.charges.create({
+      currency: 'usd',
+      amount: order.price * 100,
+      source: token
+    });
 
     res.send({ success: true });
   }
