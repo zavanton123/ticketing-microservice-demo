@@ -18,6 +18,11 @@ spec:
             backend:
               serviceName: auth-srv
               servicePort: 3000
+          # route for the payments microservice
+          - path: /api/payments/?(.*)
+            backend:
+              serviceName: payments-srv
+              servicePort: 3000
           # route for the tickets microservice
           - path: /api/tickets/?(.*)
             backend:

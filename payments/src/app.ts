@@ -1,7 +1,8 @@
+import { createChargeRouter } from "./routes/new";
 import express from 'express';
 import 'express-async-errors';
-import {json} from 'body-parser';
-import {errorHandler, NotFoundError, currentUser} from '@zatickets/common';
+import { json } from 'body-parser';
+import { errorHandler, NotFoundError, currentUser } from '@zatickets/common';
 import cookieSession from 'cookie-session';
 
 const app = express();
@@ -14,7 +15,10 @@ app.use(cookieSession({
   signed: false,
   // http is used for testing, https is used for production
   secure: process.env.NODE_ENV !== 'test'
-}))
+}));
+app.use(currentUser);
+
+app.use(createChargeRouter);
 
 app.all('*', async (req, res) => {
   throw new NotFoundError();
@@ -23,4 +27,4 @@ app.all('*', async (req, res) => {
 // global error handler for the auth microservice
 app.use(errorHandler);
 
-export {app};
+export { app };
