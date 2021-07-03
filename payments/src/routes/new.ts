@@ -11,6 +11,8 @@ import {
 } from "@zatickets/common";
 import { Order } from "../models/order";
 import { Payment } from "../models/payment";
+import { PaymentCreatedPublisher } from "../events/publishers/payment-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -46,13 +48,21 @@ router.post('/api/payments',
       amount: order.price * 100,
       source: token
     });
+    // save the successful payment info to DB
     const payment = Payment.build({
       orderId,
       stripeId: charge.id
     });
     await payment.save();
 
-    res.status(201).send({ success: true });
+    // publish the payment:created event to other microservices
+    await new PaymentCreatedPublisher(natsWrapper.client).publish({
+      id: payment.id,
+      orderId: payment.orderId,
+      stripeId: payment.stripeId
+    });
+
+    res.status(201).send({ id: payment.id });
   }
 );
 
