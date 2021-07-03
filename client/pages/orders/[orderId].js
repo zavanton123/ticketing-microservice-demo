@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import useRequest from '../../hooks/use-request';
+import Router from 'next/router';
 
 const OrderShow = ({ order, currentUser }) => {
   const [timeLeft, setTimeLeft] = useState(0);
@@ -10,7 +11,7 @@ const OrderShow = ({ order, currentUser }) => {
     body: {
       orderId: order.id,
     },
-    onSuccess: (payment) => console.log(payment),
+    onSuccess: () => Router.push('/orders'),
   })
 
   useEffect(() => {
@@ -31,6 +32,9 @@ const OrderShow = ({ order, currentUser }) => {
     return <div>Order expired</div>;
   }
 
+  // Note for testing purposes, the credit card number is: 4242 4242 4242 4242
+  // Expiration date: any date in the future
+  // Security code: any 3-digit code (e.g. '123)
   return <div>
     Time left to pay: { timeLeft } seconds.
     <StripeCheckout
