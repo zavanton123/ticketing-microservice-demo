@@ -6,7 +6,7 @@ import Header from '../components/header';
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return <div>
     <Header currentUser={ currentUser }/>
-    <Component { ...pageProps }/>
+    <Component currentUser={ currentUser } { ...pageProps }/>
   </div>
 };
 
@@ -21,7 +21,7 @@ AppComponent.getInitialProps = async (appContext) => {
   // (e.g. LandingPage has getInitialProps, but other components have none)
   if (appContext.Component.getInitialProps) {
     // call the component's getInitialProps
-    pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+    pageProps = await appContext.Component.getInitialProps(appContext.ctx, client, data.currentUser);
   }
 
   // return the AppComponent getInitialProps data
