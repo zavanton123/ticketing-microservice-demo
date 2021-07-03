@@ -1,7 +1,14 @@
-import {stripe} from "../../stripe";
+import { stripe } from "../stripe";
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { BadRequestError, OrderStatus, requireAuth, validateRequest } from "@zatickets/common";
+import {
+  BadRequestError,
+  NotAuthorizedError,
+  NotFoundError,
+  OrderStatus,
+  requireAuth,
+  validateRequest
+} from "@zatickets/common";
 import { Order } from "../models/order";
 
 const router = express.Router();
@@ -23,14 +30,10 @@ router.post('/api/payments',
     const order = await Order.findById(orderId);
 
     if (!order) {
-      // todo zavanton - for some reason the errors are not processed correctly here...
-      // throw new NotFoundError();
-      return res.status(404).send({});
+      throw new NotFoundError();
     }
     if (order.userId !== req.currentUser!.id) {
-      // todo zavanton - for some reason the errors are not processed correctly here...
-      // throw new NotAuthorizedError();
-      return res.status(401).send({});
+      throw new NotAuthorizedError();
     }
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError('Cannot pay for a cancelled order');
@@ -43,7 +46,7 @@ router.post('/api/payments',
       source: token
     });
 
-    res.send({ success: true });
+    res.status(201).send({ success: true });
   }
 );
 

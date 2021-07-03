@@ -1,17 +1,6 @@
-import {MongoMemoryServer} from 'mongodb-memory-server';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-
-// global signin function is just for convenience
-// (i.e. avoid importing)
-// (exported non-global function would also be ok)
-declare global {
-  namespace NodeJS {
-    interface Global {
-      signin(id?: string): string[];
-    }
-  }
-}
 
 // note: this replaces the actual import of nats-wrapper
 // by importing the nats-wrapper mock
@@ -49,7 +38,7 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-global.signin = (id?: string) => {
+export const signin = (id?: string) => {
   // build a JWT payload {id, email}
   const payload = {
     // note: each time a new id is generated
@@ -61,7 +50,7 @@ global.signin = (id?: string) => {
   const token = jwt.sign(payload, process.env.JWT_KEY!);
 
   // build session object: {jwt: my-jwt-here}
-  const session = {jwt: token};
+  const session = { jwt: token };
 
   // turn that session into json
   const sessionJSON = JSON.stringify(session);

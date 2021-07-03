@@ -1,12 +1,11 @@
 import { OrderStatus } from '@zatickets/common';
-import {updateIfCurrentPlugin} from "mongoose-update-if-current";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import mongoose from 'mongoose';
-import { queueGroupName } from "../events/listeners/queue-group-name";
 
 interface OrderAttrs {
   id: string;
   version: number;
-  userId: string,
+  userId: string;
   price: number;
   status: OrderStatus;
 }
@@ -14,7 +13,7 @@ interface OrderAttrs {
 // Note: mongoose.Document already defines id
 interface OrderDoc extends mongoose.Document {
   version: number;
-  userId: string,
+  userId: string;
   price: number;
   status: OrderStatus;
 }

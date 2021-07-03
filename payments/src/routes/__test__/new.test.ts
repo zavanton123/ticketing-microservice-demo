@@ -3,14 +3,15 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from "../../app";
 import { OrderStatus } from "@zatickets/common";
-import { stripe } from "../../../stripe";
+import { stripe } from "../../stripe";
+import { signin } from "../../test/setup";
 
-jest.mock('../../../stripe')
+jest.mock('../../stripe');
 
 it('returns a 404 when purchasing an order that does not exist', async () => {
   await request(app)
     .post('/api/payments')
-    .set('Cookie', global.signin())
+    .set('Cookie', signin())
     .send({
       token: 'some-token',
       orderId: mongoose.Types.ObjectId().toHexString()
@@ -30,7 +31,7 @@ it('returns a 401 when purchasing an order that does not belong to the user', as
 
   await request(app)
     .post('/api/payments')
-    .set('Cookie', global.signin())
+    .set('Cookie', signin())
     .send({
       token: 'some-token',
       orderId: order.id
@@ -51,7 +52,7 @@ it('returns 400 when purchasing a cancelled order', async () => {
 
   await request(app)
     .post('/api/payments')
-    .set('Cookie', global.signin(userId))
+    .set('Cookie', signin(userId))
     .send({
       orderId: order.id,
       token: 'falskj',
@@ -59,7 +60,7 @@ it('returns 400 when purchasing a cancelled order', async () => {
     .expect(400);
 });
 
-it('returns a 204 with valid inputs', async () => {
+it('returns a 201 with valid inputs', async () => {
   const userId = mongoose.Types.ObjectId().toHexString();
   const order = Order.build({
     id: mongoose.Types.ObjectId().toHexString(),
@@ -72,13 +73,13 @@ it('returns a 204 with valid inputs', async () => {
 
   await request(app)
     .post('/api/payments')
-    .set('Cookie', global.signin(userId))
+    .set('Cookie', signin(userId))
     .send({
       orderId: order.id,
       // this is a test token taken from stripe docs
       token: 'tok_visa',
     })
-    .expect(204);
+    .expect(201);
 
   const chargeOptions = (stripe.charges.create as jest.Mock).mock.calls[0][0];
   expect(chargeOptions.source).toEqual('tok_visa');

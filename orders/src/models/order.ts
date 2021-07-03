@@ -1,10 +1,10 @@
-import {updateIfCurrentPlugin} from 'mongoose-update-if-current';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 import mongoose from 'mongoose';
-import {OrderStatus} from '@zatickets/common';
-import {TicketDoc} from "./ticket";
+import { OrderStatus } from '@zatickets/common';
+import { TicketDoc } from "./ticket";
 
 // reexport OrderStatus for use by other modules in this microservice
-export {OrderStatus};
+export { OrderStatus };
 
 interface OrderAttrs {
   userId: string;
@@ -63,4 +63,4 @@ orderSchema.statics.build = (attrs: OrderAttrs) => {
 
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
-export {Order};
+export { Order };
