@@ -1,9 +1,9 @@
-import { createChargeRouter } from "./routes/new";
 import express from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
 import { currentUser, errorHandler, NotFoundError } from '@zatickets/common';
 import cookieSession from 'cookie-session';
+import { createChargeRouter } from "./routes/new";
 
 const app = express();
 
