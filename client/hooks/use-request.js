@@ -1,11 +1,11 @@
 import axios from 'axios';
-import {useState} from 'react';
+import { useState } from 'react';
 
 // Define a custom hook
 // The hook makes some request (with url, method and body)
 // It does some action if successful (onSuccess)
 // or processes the errors
-export default ({url, method, body, onSuccess}) => {
+export default ({ url, method, body, onSuccess }) => {
   const [errors, setErrors] = useState(null);
 
   const doRequest = async () => {
@@ -24,12 +24,12 @@ export default ({url, method, body, onSuccess}) => {
           <h4>Ooops...</h4>
           <ul className="my-0">
             {
-              err.response.data.errors.map(err => <li key={err.message}>{err.message}</li>)
+              err.response.data.errors.map(err => <li key={ err.message }>{ err.message }</li>)
             }
           </ul>
         </div>
       );
     }
   }
-  return {doRequest, errors};
+  return { doRequest, errors };
 };

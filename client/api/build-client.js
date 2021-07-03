@@ -11,7 +11,7 @@ import axios from 'axios';
 // it will be using the correct base url
 // depending on where it is being used
 // (i.e. on the client side or the server side)
-export default ({req}) => {
+export default ({ req }) => {
   if (typeof window === 'undefined') {
     // we are on the server
     // Here are trying to send requests from inside the server node
