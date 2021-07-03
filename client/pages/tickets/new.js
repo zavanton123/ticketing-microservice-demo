@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useRequest from '../../hooks/use-request';
+import Router from 'next/router';
 
 const NewTicket = () => {
   const [title, setTitle] = useState('');
@@ -10,8 +11,8 @@ const NewTicket = () => {
     body: {
       title, price
     },
-    onSuccess: (ticket) => console.log(ticket),
-  })
+    onSuccess: (ticket) => Router.push('/'),
+  });
 
   // onBlur is called when the user selects/deselects the input field
   const onBlur = () => {
