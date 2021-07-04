@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+// the common library must be published to npmjs.com
 import { NotFoundError } from '@zatickets/common';
 import { Ticket } from "../models/ticket";
 
@@ -11,7 +12,6 @@ router.get('/api/tickets/:id', async (req: Request, res: Response) => {
   }
 
   res.send(ticket);
-
 });
 
 export { router as showTicketRouter };

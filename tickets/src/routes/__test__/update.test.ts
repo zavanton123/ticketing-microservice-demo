@@ -6,9 +6,11 @@ import mongoose from 'mongoose';
 import { natsWrapper } from "../../nats-wrapper";
 
 it('returns a 404 if the provided id does not exist', async () => {
+  // this is a mock for the mongodb id
   const id = new mongoose.Types.ObjectId().toHexString();
+
   await request(app)
-    .put(`/api/tickets/${id}`)
+    .put(`/api/tickets/${ id }`)
     .set('Cookie', global.signin())
     .send({
       title: 'some-valid-title',
@@ -20,7 +22,7 @@ it('returns a 404 if the provided id does not exist', async () => {
 it('returns a 401 if the user is not authenticated', async () => {
   const id = new mongoose.Types.ObjectId().toHexString();
   await request(app)
-    .put(`/api/tickets/${id}`)
+    .put(`/api/tickets/${ id }`)
     .send({
       title: 'some-valid-title',
       price: 20
@@ -41,7 +43,7 @@ it('returns a 401 if the user does not own the ticket', async () => {
 
   await request(app)
     // note: we are updating the ticket we have just created
-    .put(`/api/tickets/${response.body.id}`)
+    .put(`/api/tickets/${ response.body.id }`)
     // note: this is user #2
     .set('Cookie', global.signin())
     .send({
@@ -64,7 +66,7 @@ it('returns a 400 if the users provides invalid title or price', async () => {
     .expect(201);
 
   await request(app)
-    .put(`/api/tickets/${response.body.id}`)
+    .put(`/api/tickets/${ response.body.id }`)
     // note: the same user
     .set('Cookie', cookie)
     .send({
@@ -74,7 +76,7 @@ it('returns a 400 if the users provides invalid title or price', async () => {
     .expect(400);
 
   await request(app)
-    .put(`/api/tickets/${response.body.id}`)
+    .put(`/api/tickets/${ response.body.id }`)
     // note: the same user
     .set('Cookie', cookie)
     .send({
@@ -100,7 +102,7 @@ it('updates the ticket when valid inputs are provided', async () => {
   const newPrice = 150;
 
   await request(app)
-    .put(`/api/tickets/${response.body.id}`)
+    .put(`/api/tickets/${ response.body.id }`)
     // note: the same user
     .set('Cookie', cookie)
     .send({
@@ -110,7 +112,7 @@ it('updates the ticket when valid inputs are provided', async () => {
     .expect(200);
 
   const ticketResponse = await request(app)
-    .get(`/api/tickets/${response.body.id}`)
+    .get(`/api/tickets/${ response.body.id }`)
     .send();
 
   expect(ticketResponse.body.title).toEqual(newTitle);
@@ -133,7 +135,7 @@ it('publishes an event', async () => {
   const newPrice = 150;
 
   await request(app)
-    .put(`/api/tickets/${response.body.id}`)
+    .put(`/api/tickets/${ response.body.id }`)
     // note: the same user
     .set('Cookie', cookie)
     .send({
@@ -168,7 +170,7 @@ it('rejects updates if the ticket is reserved', async () => {
 
   // the reserved ticket update should be rejected (i.e. http code == 400)
   await request(app)
-    .put(`/api/tickets/${response.body.id}`)
+    .put(`/api/tickets/${ response.body.id }`)
     .set('Cookie', cookie)
     .send({
       title: newTitle,

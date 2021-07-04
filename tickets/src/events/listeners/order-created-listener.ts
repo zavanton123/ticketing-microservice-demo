@@ -4,6 +4,8 @@ import { Message } from 'node-nats-streaming';
 import { queueGroupName } from "./queue-group-name";
 import {TicketUpdatedPublisher} from "../publishers/ticket-updated-publisher";
 
+// When an order is created, the ticket in this orders becomes reserved
+// (i.e. other users cannot buy it)
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
   subject: Subjects.OrderCreated = Subjects.OrderCreated;
   queueGroupName: string = queueGroupName;

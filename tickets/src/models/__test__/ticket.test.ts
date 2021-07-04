@@ -17,7 +17,7 @@ it('implements optimistic concurrency control', async () => {
 
   // make two separate changes to the tickets we have fetched
   firstInstance!.set({ price: 10 });
-  secondInstance!.set({price: 30});
+  secondInstance!.set({ price: 30 });
 
   // save the first fetched ticket
   await firstInstance!.save();
@@ -25,7 +25,7 @@ it('implements optimistic concurrency control', async () => {
   // save the second fetched ticket and expect an error
   try {
     await secondInstance!.save();
-  } catch(err){
+  } catch (err) {
     return;
   }
   throw new Error('Should not reach this point!');

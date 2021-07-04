@@ -1,8 +1,8 @@
 import request from 'supertest';
-import {app} from '../../app';
-import {Ticket} from "../../models/ticket";
+import { app } from '../../app';
+import { Ticket } from "../../models/ticket";
 // note: a mock is imported here (not the real natsWrapper)
-import {natsWrapper} from "../../nats-wrapper";
+import { natsWrapper } from "../../nats-wrapper";
 
 it('has a route handler listening to /api/tickets for post requests', async () => {
   const response = await request(app)
@@ -95,9 +95,6 @@ it('publishes an event', async () => {
       price: 10
     })
     .expect(201);
-
-  console.log(`zavanton - natsWrapper`);
-  console.log(natsWrapper);
 
   // test if the mocked function has been called
   expect(natsWrapper.client.publish).toHaveBeenCalled();

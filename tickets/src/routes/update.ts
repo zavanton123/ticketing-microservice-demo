@@ -16,8 +16,7 @@ router.put('/api/tickets/:id',
       .withMessage('The title is required'),
     body('price')
       .isFloat({ gt: 0 })
-      .withMessage('Price must be greater than 0')
-
+      .withMessage('Price must be greater than 0'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -31,10 +30,12 @@ router.put('/api/tickets/:id',
       throw new BadRequestError('Cannot edit a reserved ticket');
     }
 
+    // only the owner of the ticket can update it
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
 
+    // update and save the ticket
     ticket.set({
       title: req.body.title,
       price: req.body.price

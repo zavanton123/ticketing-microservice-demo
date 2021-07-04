@@ -17,7 +17,7 @@ spec:
           image: zavanton/tickets
           env:
             # for logging purposes, the NATS client id
-            # should be equal to the pod's name
+            # should be equal to the pod's name (i.e. tickets)
             - name: NATS_CLIENT_ID
               valueFrom:
                 fieldRef:

@@ -4,6 +4,8 @@ import { queueGroupName } from "./queue-group-name";
 import { Ticket } from "../../models/ticket";
 import { TicketUpdatedPublisher } from "../publishers/ticket-updated-publisher";
 
+// When the order is cancelled, the ticket in the order should be made unreserved
+// (i.e. available for other users to purchase)
 export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
   subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
   queueGroupName: string = queueGroupName;
