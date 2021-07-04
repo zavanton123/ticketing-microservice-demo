@@ -7,10 +7,8 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: 'true'
 spec:
   rules:
-    # note: you have to map ticketing.dev to minikube ip in /etc/hosts
-    # example: 192.168.49.2    ticketing.dev
-    # note: to disable chrome ssl protection, just type 'thisisunsafe' in chrome
-    - host: evolunta.com
+    # NOTE: this is the real domain name for your project
+    - host: www.evolunta.com
       http:
         paths:
           # route for the auth microservice
