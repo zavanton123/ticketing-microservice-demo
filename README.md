@@ -14,3 +14,21 @@ kubectl port-forward nats-depl-c576ff5c8-4mq6p 8222:8222
 
 ### Create stripe secret key
 kubectl create secret generic stripe-secret --from-literal STRIPE_KEY=some-key-here
+
+
+### How to run github actions (run tests on PR)
+Create file ./.github/workflows/tests.yml
+```
+name: tests
+
+on:
+pull_request
+
+jobs:
+build:
+runs-on: ubuntu-latest
+steps:
+- uses: actions/checkout@v2
+- run: cd auth && npm install && npm run test:ci
+
+```
