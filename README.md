@@ -32,3 +32,28 @@ steps:
 - run: cd auth && npm install && npm run test:ci
 
 ```
+
+
+### Deploy with Digital Ocean
+- create account
+- create a new cluster
+- install digital ocean command line tool
+```
+sudo snap install doctl
+```
+- Go to digital ocean > API > create new token
+- run (and enter token when prompted)
+```
+doctl auth init
+```
+- get connection info for our new cluster
+```
+sudo snap connect doctl:kube-config
+doctl kubernetes cluster kubeconfig save some-cluster-name-here
+```
+- check the kubectl config context
+```
+kubectl config view
+kubectl config get-contexts
+kubectl config current-context
+```
