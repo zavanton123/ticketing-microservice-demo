@@ -59,5 +59,5 @@ export const signin = (id?: string) => {
   const base64 = Buffer.from(sessionJSON).toString('base64');
 
   // return a string (i.e. with encoded data)
-  return [`express:sess=${base64}`];
+  return [`express:sess=${ base64 }`];
 };

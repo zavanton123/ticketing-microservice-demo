@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import {app} from "./app";
-import {natsWrapper} from "./nats-wrapper";
-import {OrderCreatedListener} from "./events/listeners/order-created-listener";
-import {OrderCancelledListener} from "./events/listeners/order-cancelled-listener";
+import { app } from "./app";
+import { natsWrapper } from "./nats-wrapper";
+import { OrderCreatedListener } from "./events/listeners/order-created-listener";
+import { OrderCancelledListener } from "./events/listeners/order-cancelled-listener";
 
 const start = async () => {
   // check if the environment variables are set
@@ -53,7 +53,7 @@ const start = async () => {
     });
     console.log(`zavanton - connected to DB`);
   } catch (err) {
-    console.error(`zavanton - error connecting to DB: ${err}`);
+    console.error(`zavanton - error connecting to DB: ${ err }`);
   }
   app.listen(3000, () => {
     console.log('tickets - Listening on port 3000');

@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from "../../app";
 import { OrderStatus } from "@zatickets/common";
-import { stripe } from "../../stripe";
 import { signin } from "../../test/setup";
 
 jest.mock('../../stripe');

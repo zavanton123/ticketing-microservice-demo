@@ -1,6 +1,6 @@
 import nats from 'node-nats-streaming';
-import {randomBytes} from 'crypto';
-import {TicketCreatedListener} from "./events/ticket-created-listener";
+import { randomBytes } from 'crypto';
+import { TicketCreatedListener } from "./events/ticket-created-listener";
 
 // this is to remove the previous output in the console
 console.clear();

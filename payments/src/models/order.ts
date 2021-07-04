@@ -18,6 +18,8 @@ interface OrderDoc extends mongoose.Document {
   status: OrderStatus;
 }
 
+// NOTE: the orders in this payments microservice
+// are duplicates of the orders from the orders microservice
 interface OrderModel extends mongoose.Model<OrderDoc> {
   build(attrs: OrderAttrs): OrderDoc;
 }
