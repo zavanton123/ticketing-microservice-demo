@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
-import {app} from '../../app';
-import {Ticket} from "../../models/ticket";
+import { app } from '../../app';
+import { Ticket } from "../../models/ticket";
 
 const buildTicket = async () => {
   const ticket = Ticket.build({
@@ -25,20 +25,20 @@ it('fetches orders for a particular user', async () => {
   await request(app)
     .post('/api/orders')
     .set('Cookie', userOne)
-    .send({ticketId: ticketOne.id})
+    .send({ ticketId: ticketOne.id })
     .expect(201);
 
   // create 2 orders as user #2
-  const {body: orderOne} = await request(app)
+  const { body: orderOne } = await request(app)
     .post('/api/orders')
     .set('Cookie', userTwo)
-    .send({ticketId: ticketTwo.id})
+    .send({ ticketId: ticketTwo.id })
     .expect(201);
 
-  const {body: orderTwo} = await request(app)
+  const { body: orderTwo } = await request(app)
     .post('/api/orders')
     .set('Cookie', userTwo)
-    .send({ticketId: ticketThree.id})
+    .send({ ticketId: ticketThree.id })
     .expect(201);
 
   // make request to get orders for user #2

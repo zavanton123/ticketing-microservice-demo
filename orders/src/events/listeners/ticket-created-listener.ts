@@ -3,6 +3,8 @@ import { Listener, Subjects, TicketCreatedEvent } from '@zatickets/common';
 import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue-group-name";
 
+// When a new ticket is created in tickets microservice,
+// create a duplicate DB entry for this ticket in the orders microservice
 export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
   subject: Subjects.TicketCreated = Subjects.TicketCreated;
   queueGroupName = queueGroupName;

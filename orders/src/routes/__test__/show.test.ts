@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import request from 'supertest';
-import {app} from '../../app';
-import {Ticket} from "../../models/ticket";
+import { app } from '../../app';
+import { Ticket } from "../../models/ticket";
 
 it('fetches the order', async () => {
   // create a ticket
@@ -16,15 +16,15 @@ it('fetches the order', async () => {
   const user = global.signin();
 
   // make a request to build an order
-  const {body: order} = await request(app)
+  const { body: order } = await request(app)
     .post('/api/orders')
     .set('Cookie', user)
-    .send({ticketId: ticket.id})
+    .send({ ticketId: ticket.id })
     .expect(201);
 
   // make a request to fetch the order
-  const {body: fetchedOrder} = await request(app)
-    .get(`/api/orders/${order.id}`)
+  const { body: fetchedOrder } = await request(app)
+    .get(`/api/orders/${ order.id }`)
     .set('Cookie', user)
     .send()
     .expect(200);
@@ -46,16 +46,16 @@ it('returns an error if one user tries to fetch another user order', async () =>
   const userTwo = global.signin();
 
   // make a request to build an order (as user #1)
-  const {body: order} = await request(app)
+  const { body: order } = await request(app)
     .post('/api/orders')
     .set('Cookie', userOne)
-    .send({ticketId: ticket.id})
+    .send({ ticketId: ticket.id })
     .expect(201);
 
   // make a request to fetch the order (as user #2)
-  const {body: fetchedOrder} = await request(app)
-    .get(`/api/orders/${order.id}`)
-    .set('Cookie', userTwo  )
+  const { body: fetchedOrder } = await request(app)
+    .get(`/api/orders/${ order.id }`)
+    .set('Cookie', userTwo)
     .send()
     .expect(401);
 });

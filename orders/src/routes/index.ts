@@ -1,6 +1,6 @@
-import express, {Request, Response} from 'express';
-import {requireAuth} from '@zatickets/common';
-import {Order} from "../models/order";
+import express, { Request, Response } from 'express';
+import { requireAuth } from '@zatickets/common';
+import { Order } from "../models/order";
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router.get('/api/orders',
     res.send(orders);
   });
 
-export {router as indexOrderRouter};
+export { router as indexOrderRouter };

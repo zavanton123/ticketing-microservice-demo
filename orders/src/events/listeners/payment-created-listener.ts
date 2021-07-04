@@ -3,6 +3,7 @@ import { Message } from 'node-nats-streaming';
 import { queueGroupName } from "./queue-group-name";
 import { Order, OrderStatus } from "../../models/order";
 
+// When the order has been paid, make its status 'complete'
 export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
   subject: Subjects.PaymentCreated = Subjects.PaymentCreated;
   queueGroupName = queueGroupName;

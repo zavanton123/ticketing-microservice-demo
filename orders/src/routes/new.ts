@@ -1,11 +1,11 @@
+import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import express, {Request, Response} from 'express';
-import {BadRequestError, NotFoundError, OrderStatus, requireAuth, validateRequest} from '@zatickets/common';
-import {body} from 'express-validator';
-import {Ticket} from "../models/ticket";
-import {Order} from "../models/order";
-import {OrderCreatedPublisher} from "../events/publishers/order-created-publisher";
-import {natsWrapper} from "../nats-wrapper";
+import { BadRequestError, NotFoundError, OrderStatus, requireAuth, validateRequest } from '@zatickets/common';
+import { body } from 'express-validator';
+import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
+import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
+import { natsWrapper } from "../nats-wrapper";
 
 const router = express.Router();
 
@@ -16,14 +16,14 @@ router.post('/api/orders', requireAuth,
     body('ticketId')
       .not()
       .isEmpty()
-      // this check is ok, but it created tight coupling with the tickets microservice
+      // this check is ok, but it creates a tight coupling with the tickets microservice
       .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
-      .withMessage('TicketId must be provided')
+      .withMessage('TicketId must be provided'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
     // Find the ticket the user is trying to order in the DB
-    const {ticketId} = req.body;
+    const { ticketId } = req.body;
     const ticket = await Ticket.findById(ticketId);
     if (!ticket) {
       throw new NotFoundError();
@@ -67,4 +67,4 @@ router.post('/api/orders', requireAuth,
     res.status(201).send(order);
   });
 
-export {router as newOrderRouter};
+export { router as newOrderRouter };

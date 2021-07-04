@@ -41,6 +41,7 @@ const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Date
   },
   ticket: {
+    // this indicates a one-to-one relationship between Order and Ticket
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Ticket'
   }

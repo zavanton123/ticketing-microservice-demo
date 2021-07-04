@@ -4,11 +4,13 @@ import { Message } from 'node-nats-streaming';
 import { queueGroupName } from "./queue-group-name";
 import { Order } from "../../models/order";
 
+// If the order expires, set its status to 'cancelled
 export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent> {
   subject: Subjects.ExpirationComplete = Subjects.ExpirationComplete;
   queueGroupName: string = queueGroupName;
 
   async onMessage(data: ExpirationCompleteEvent['data'], msg: Message) {
+    // find the order and populate it with ticket info
     const order = await Order.findById(data.orderId).populate('ticket');
 
     if (!order) {
@@ -16,7 +18,7 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
     }
 
     // if the order has already been paid for, just return ack
-    if(order.status === OrderStatus.Complete){
+    if (order.status === OrderStatus.Complete) {
       return msg.ack();
     }
 

@@ -1,4 +1,4 @@
-import {MongoMemoryServer} from 'mongodb-memory-server';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
@@ -61,7 +61,7 @@ global.signin = () => {
   const token = jwt.sign(payload, process.env.JWT_KEY!);
 
   // build session object: {jwt: my-jwt-here}
-  const session = {jwt: token};
+  const session = { jwt: token };
 
   // turn that session into json
   const sessionJSON = JSON.stringify(session);
@@ -70,5 +70,5 @@ global.signin = () => {
   const base64 = Buffer.from(sessionJSON).toString('base64');
 
   // return a string (i.e. with encoded data)
-  return [`express:sess=${base64}`];
+  return [`express:sess=${ base64 }`];
 };

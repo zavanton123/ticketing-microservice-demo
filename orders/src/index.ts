@@ -57,7 +57,7 @@ const start = async () => {
     });
     console.log(`zavanton - connected to DB`);
   } catch (err) {
-    console.error(`zavanton - error connecting to DB: ${err}`);
+    console.error(`zavanton - error connecting to DB: ${ err }`);
   }
   app.listen(3000, () => {
     console.log('tickets - Listening on port 3000');
