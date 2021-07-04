@@ -3,6 +3,7 @@ import {app} from "./app";
 
 const start = async () => {
   // check if the environment variables are set
+  console.log(`zavanton - starting up the auth service`);
   if (!process.env.JWT_KEY) {
     throw new Error('JWT key must be defined');
   }
