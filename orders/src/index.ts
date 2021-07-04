@@ -8,6 +8,7 @@ import { PaymentCreatedListener } from "./events/listeners/payment-created-liste
 
 const start = async () => {
   // check if the environment variables are set
+  console.log(`zavanton - starting the orders service`);
   if (!process.env.JWT_KEY) {
     throw new Error('JWT key must be defined');
   }
