@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {app} from "./app";
+import { app } from "./app";
 
 const start = async () => {
   // check if the environment variables are set
@@ -19,7 +19,7 @@ const start = async () => {
     });
     console.log(`zavanton - connected to DB`);
   } catch (err) {
-    console.error(`zavanton - error connecting to DB: ${err}`);
+    console.error(`zavanton - error connecting to DB: ${ err }`);
   }
   app.listen(3000, () => {
     console.log('auth - Listening on port 3000');

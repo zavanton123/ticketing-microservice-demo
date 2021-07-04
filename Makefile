@@ -1,2 +1,0 @@
-up:
-	skaffold dev

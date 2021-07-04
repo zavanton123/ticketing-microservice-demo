@@ -1,7 +1,7 @@
-import express, {Request, Response} from 'express';
-import {body} from 'express-validator';
-import {User} from '../models/user';
-import {validateRequest, BadRequestError} from '@zatickets/common';
+import express, { Request, Response } from 'express';
+import { body } from 'express-validator';
+import { User } from '../models/user';
+import { validateRequest, BadRequestError } from '@zatickets/common';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
@@ -12,21 +12,21 @@ router.post('/api/users/signup', [
       .withMessage('Email must be valid'),
     body('password')
       .trim()
-      .isLength({min: 4, max: 20})
-      .withMessage('Password must be between 4 and 20 characters')
+      .isLength({ min: 4, max: 20 })
+      .withMessage('Password must be between 4 and 20 characters'),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     // Users with the same email are not allowed
-    const existingUser = await User.findOne({email});
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw new BadRequestError('Email in use');
     }
 
     // create a new user
-    const user = User.build({email, password});
+    const user = User.build({ email, password });
     await user.save();
 
     // create JWT
@@ -39,8 +39,8 @@ router.post('/api/users/signup', [
     )
 
     // store the JWT into cookie
-    req.session = {jwt: userJwt};
+    req.session = { jwt: userJwt };
     res.status(201).send(user);
   });
 
-export {router as signupRouter};
+export { router as signupRouter };

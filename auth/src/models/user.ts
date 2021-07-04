@@ -1,18 +1,22 @@
 import mongoose from 'mongoose';
-import {Password} from "../services/password";
+import { Password } from "../services/password";
 
+// Attrs is used to type check the parameters
+// passed to create UserModel
 interface UserAttrs {
   email: string;
   password: string;
 }
 
-interface UserModel extends mongoose.Model<any> {
-  build(attrs: UserAttrs): any;
-}
-
+// Document is used to indicate
+// which fields will be in the DB
 interface UserDoc extends mongoose.Document {
   email: string;
   password: string;
+}
+
+interface UserModel extends mongoose.Model<UserDoc> {
+  build(attrs: UserAttrs): UserDoc;
 }
 
 const userSchema = new mongoose.Schema({
@@ -57,4 +61,4 @@ userSchema.statics.build = (attrs: UserAttrs) => {
 
 const User = mongoose.model<UserDoc, UserModel>('User', userSchema);
 
-export {User};
+export { User };

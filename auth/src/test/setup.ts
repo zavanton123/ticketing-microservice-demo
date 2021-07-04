@@ -1,6 +1,6 @@
-import {MongoMemoryServer} from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import {app} from "../app";
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import { app } from "../app";
 import request from 'supertest';
 
 // global signin function is just for convenience
@@ -43,6 +43,7 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
+// This function is used to mock authorization in tests
 global.signin = async () => {
   const email = 'test@test.com';
   const password = 'password';
@@ -50,7 +51,7 @@ global.signin = async () => {
   // do the signin
   const response = await request(app)
     .post('/api/users/signup')
-    .send({email, password})
+    .send({ email, password })
     .expect(201);
 
   // return the cookie
