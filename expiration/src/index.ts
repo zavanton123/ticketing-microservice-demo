@@ -35,7 +35,7 @@ const start = async () => {
     // listen for order:created events
     new OrderCreatedListener(natsWrapper.client).listen();
   } catch (err) {
-    console.error(`zavanton - error connecting to DB: ${err}`);
+    console.error(`zavanton - error connecting to DB: ${ err }`);
   }
 }
 
